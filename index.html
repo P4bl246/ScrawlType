@@ -4,15 +4,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="button-style.css">
 </head>
 <body>
-    <div class="home-header">   
-        <img src="front/logo.png" alt="ScrawlType">
-        <button onclick="location.href='front/logo.png'">Login</button>
-        <button onclick="location.href='front/home/register/register.html'">Register</button>
-        <button onclick=""><img src="front/menu.png" alt="Menu"></button>
+    <div id="home-header" class="home">   
+        <img id="logo"src="front/logo.png" alt="ScrawlType">
+        <div id="home-menu">
+            <div id="desk-menu">
+                <button id="home-btn" onclick="front/index.html">Home</button>
+                <button id="about-btn" onclick="front/home/about.html">About</button>
+                <button id="contact-btn" onclick="front/home/contact.html">Contact</button>
+            </div>
+        <button id="login-btn" onclick="location.href='front/home/login/login.html'">Login</button>
+        <button id="register-btn" onclick="location.href='front/home/register/register.html'">Register</button>
+        <button id="menu-btn" onclick=""><img src="front/menu.png" alt="Menu"></button>
+        </div>
     </div>
-    <div class="home-content">  
+    <div id="home-content" class="home">  
         <h1 font-family="Jura">Welcome to ScrawlType!</h1>
         <p font-family="Jura">Draw whatever you want and convert hand-work into clean and precise
              digital representations.
