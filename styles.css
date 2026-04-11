@@ -1,4 +1,123 @@
 body{
+    width:100vw;
+    height:100vh;
+    margin:0;
+    padding:0;
+}
+
+#home-header{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right,rgba(33, 34, 36, 0.767), rgb(9, 61, 121));
+    width:100vw;
+}
+
+#home-content{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background-color:#f0f0f0;
+}
+
+#home-header #logo{
+    border: none;
+    background:none;
+    padding-right: 60vw;
+    margin-left: 0vw;
+}
+
+#home-header #home-menu #desk-menu{
+    display: none;
+}
+
+#home-header #home-menu{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:2vw;
+}
+
+#home-header #home-menu button{
+    color:white;
+    font-size:16px;
+}
+
+#home-header #menu-btn img{
+    width:30px;
+    height:30px;
+}
+
+#home-header #login-btn{
+    background-color:transparent;
+    border:2px solid rgb(0, 0, 0);
+    padding:5px 15px;
+    border-radius:5px;
+}
+
+#home-header #register-btn{
+    background-color:rgb(17, 17, 17);
+    border:white solid 2px;
+    padding:5px 15px;
+    border-radius:5px;
+    color:#333;
+}
+
+#home-header #login-btn:hover{
+    background-color:rgba(36, 188, 199, 0.397);
+    border:none;
+    padding:5px 15px;
+    border-radius:5px;
+    color:rgb(20, 20, 20);
+}
+
+#home-header #register-btn:hover{
+    background-color:rgba(23, 206, 238, 0.397);
+    border:none;
+    padding:5px 15px;
+    border-radius:5px;
+    color:rgb(20, 20, 20);
+}
+
+#home-header #menu-btn:hover img{
+    width:40px;
+    height:40px;
+}
+
+#home-header #menu-btn:hover{
+    background-color:transparent;
+    border:black solid 2px;
+    padding:5px 15px;
+    border-radius:5px;
+}
+
+@media (min-width: 1280px){
+    #home-header #home-menu #menu-btn{
+        display:none;
+    }
+
+    #home-header #home-menu #desk-menu{
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap:2vw;
+    }
+}
+
+@media (max-width: 810px){
+    #home-header{
+        gap:0px;
+    }
+}
+
+
+
+
+
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
     
