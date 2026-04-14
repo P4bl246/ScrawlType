@@ -74,8 +74,8 @@ body {
 }
 
 #home-header #menu-btn img {
-    width: 30px;
-    height: 30px;
+    width: 4vw;
+    height: 4vw;
 }
 
 #home-header #continue-btn {
@@ -133,14 +133,14 @@ body {
 }
 
 #home-header #menu-btn:hover img {
-    width: 40px;
-    height: 40px;
+    width: 5vw;
+    height: 5vw;
 }
 
 #home-header #menu-btn:hover {
     background-color: transparent;
     border: black solid 2px;
-    padding: 5px 15px;
+    padding: 2vh 3vw;
     border-radius: 5px;
 }
 
