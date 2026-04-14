@@ -10,40 +10,260 @@
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <!-- HEADER — always visible, sticky -->
     <div id="home-header" class="home">   
-        <img id="logo"src="front/logo.png" alt="ScrawlType">
+        <img id="logo" src="front/logo.png" alt="ScrawlType">
         <div id="home-menu">
             <div id="desk-menu">
-                <button id="home-btn" onclick="front/index.html">Home</button>
-                <button id="about-btn" onclick="front/home/about.html">About</button>
-                <button id="contact-btn" onclick="front/home/contact.html">Contact</button>
+                <button id="home-btn" onclick="navigateTo('home')">Home</button>
+                <button id="about-btn" onclick="navigateTo('about')">About</button>
+                <button id="contact-btn" onclick="navigateTo('contact')">Contact</button>
             </div>
-        <button id="login-btn" onclick="location.href='front/home/login/login.html'">Login</button>
-        <button id="register-btn" onclick="location.href='front/home/register/register.html'">Register</button>
-        <button id="menu-btn" onclick=""><img src="front/menu.png" alt="Menu"></button>
+            <button id="continue-btn" onclick="location.href='front/drawSheet/sheet.html'">As Guest</button>
+            <button id="login-btn" onclick="navigateTo('login')">Login</button>
+            <button id="register-btn" onclick="navigateTo('register')">Register</button>
+            <div class="menu-wrapper">
+                <button id="menu-btn" onclick="toggleMenu()">
+                    <img src="front/menu.png" alt="Menu">
+                </button>
+                <nav id="menu">
+                    <button onclick="navigateTo('home')">Home</button>
+                    <button onclick="navigateTo('contact')">Contact</button>
+                    <button onclick="navigateTo('donations')">Donations</button>
+                    <button onclick="navigateTo('pqrs')">PQRS</button>
+                </nav>
+            </div>
         </div>
     </div>
-    <div id="home-content" class="home">  
-        <h1 font-family="Jura">Welcome to ScrawlType!</h1>
-        <p font-family="Jura">Draw whatever you want and convert hand-work into clean and precise
-    <div class="home-content">  
-        <h1>Welcome to ScrawlType!</h1>
-        <p>
-            Draw whatever you want and convert hand-work into clean and precise
-             digital representations.
-        </p>
-        <p>
-            Turn a hand-written notes into typography text, or convert a hand-drawn diagram into a neat and organized digital format. 
-            With ScrawlType, you can easily transform your creative ideas into polished and professional-looking outputs.
-        </p>
-        <span>
-            <span>
-                <img src="/front/Group 1.png" alt="Hello hand-written">
-                <img src="/front/Hello.png" alt="Hello typography"> 
-            </span>
 
-        </span>
+    <!-- PAGE: HOME -->
+    <section id="page-home">
+        <div id="home-content" class="home">
+            <h1>Welcome to ScrawlType!</h1>
+            <div id="intro">
+                <p>
+                    Draw whatever you want and convert hand-work into clean and precise
+                    digital representations.
+                </p>
+                <p>
+                    Turn hand-written notes into typography text, or convert a hand-drawn diagram into a neat and organized digital format. 
+                    With ScrawlType, you can easily transform your creative ideas into polished and professional-looking outputs.
+                </p>
+            </div>
+            <div id="example1">
+                <img width="100vw" height="100vh" src="front/Group 1.png" alt="Hello (hand-written)">
+                <img width="50vw" height="30vh" src="front/arrow.png" alt="→">
+                <img width="100vw" height="60vh" src="front/Hello.png" alt="Hello (typography)"> 
+            </div>
+            <div id="gallery">
+                <img src="front/writting.png" alt="someone writting">
+                <img src="front/font-styles.jpg" alt="font styles">
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <!-- PAGE: ABOUT -->
+    <section id="page-about">
+        <div id="about-content">
+            <h1>About ScrawlType</h1>
+            <p>
+                ScrawlType is a tool designed to bridge the gap between analog creativity 
+                and digital precision. We believe handwriting and hand-drawn ideas deserve 
+                to live in the digital world without losing their soul.
+            </p>
+            <div id="about-mission">
+                <h2>Our mission</h2>
+                <p>
+                    To make digitization of handwritten content accessible, fast, and beautiful 
+                    for everyone — students, designers, writers, and professionals.
+                </p>
+            </div>
+            <div id="about-team">
+                <h2>The team</h2>
+                <div class="team-member">
+                    <img src="front/team1.png" alt="Team member">
+                    <h3>Name</h3>
+                    <p>Role</p>
+                </div>
+                <div class="team-member">
+                    <img src="front/team2.png" alt="Team member">
+                    <h3>Name</h3>
+                    <p>Role</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: CONTACT -->
+    <section id="page-contact">
+        <div id="contact-content">
+            <h1>Contact us</h1>
+            <p>Have a question or want to reach out? Fill out the form below and we'll get back to you as soon as possible.</p>
+            <div id="contact-form">
+                <div class="field-group">
+                    <label for="contact-name">Full name</label>
+                    <input type="text" id="contact-name" placeholder="Your full name">
+                </div>
+                <div class="field-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" placeholder="your@email.com">
+                </div>
+                <div class="field-group">
+                    <label for="contact-subject">Subject</label>
+                    <input type="text" id="contact-subject" placeholder="What is this about?">
+                </div>
+                <div class="field-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" rows="6" placeholder="Write your message here..."></textarea>
+                </div>
+                <button id="contact-submit">Send message</button>
+            </div>
+            <div id="contact-info">
+                <p>You can also reach us at <strong>hello@scrawltype.com</strong></p>
+                <p>Or follow us on our social media channels.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: DONATIONS -->
+    <section id="page-donations">
+        <div id="donations-content">
+            <h1>Support ScrawlType</h1>
+            <p>
+                ScrawlType is an independent project built with passion. Your donation 
+                helps us keep the servers running, improve the app, and keep it free for everyone.
+            </p>
+            <div id="donation-options">
+                <div class="donation-card">
+                    <h3>Coffee</h3>
+                    <p class="donation-amount">$3</p>
+                    <p>A small gesture that keeps us going.</p>
+                    <button class="donate-btn" onclick="selectDonation(3)">Donate $3</button>
+                </div>
+                <div class="donation-card">
+                    <h3>Supporter</h3>
+                    <p class="donation-amount">$10</p>
+                    <p>You believe in what we're building.</p>
+                    <button class="donate-btn" onclick="selectDonation(10)">Donate $10</button>
+                </div>
+                <div class="donation-card">
+                    <h3>Champion</h3>
+                    <p class="donation-amount">$25</p>
+                    <p>You're a true ScrawlType champion.</p>
+                    <button class="donate-btn" onclick="selectDonation(25)">Donate $25</button>
+                </div>
+            </div>
+            <div id="donation-custom">
+                <label for="custom-amount">Or enter a custom amount</label>
+                <input type="number" id="custom-amount" placeholder="$ Amount" min="1">
+                <button onclick="selectDonation('custom')">Donate custom</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: PQRS -->
+    <section id="page-pqrs">
+        <div id="pqrs-content">
+            <h1>PQRS</h1>
+            <p>
+                Here you can submit a Petition, Complaint, Claim, or Suggestion. 
+                We read every single one and take them seriously.
+            </p>
+            <div id="pqrs-form">
+                <div class="field-group">
+                    <label for="pqrs-type">Type of request</label>
+                    <select id="pqrs-type">
+                        <option value="">Select one...</option>
+                        <option value="petition">Petition</option>
+                        <option value="complaint">Complaint</option>
+                        <option value="claim">Claim</option>
+                        <option value="suggestion">Suggestion</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="pqrs-name">Full name</label>
+                    <input type="text" id="pqrs-name" placeholder="Your full name">
+                </div>
+                <div class="field-group">
+                    <label for="pqrs-email">Email</label>
+                    <input type="email" id="pqrs-email" placeholder="your@email.com">
+                </div>
+                <div class="field-group">
+                    <label for="pqrs-id">ID number</label>
+                    <input type="text" id="pqrs-id" placeholder="Your identification number">
+                </div>
+                <div class="field-group">
+                    <label for="pqrs-description">Description</label>
+                    <textarea id="pqrs-description" rows="6" placeholder="Describe your request in detail..."></textarea>
+                </div>
+                <div class="field-group">
+                    <label for="pqrs-file">Attach a file (optional)</label>
+                    <input type="file" id="pqrs-file">
+                </div>
+                <button id="pqrs-submit">Submit request</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: LOGIN -->
+    <section id="page-login">
+        <div id="login-content">
+            <h1>Login</h1>
+            <div id="login-form">
+                <div class="field-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="your@email.com">
+                </div>
+                <div class="field-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Your password">
+                </div>
+                <div id="login-options">
+                    <label>
+                        <input type="checkbox" id="remember-me"> Remember me
+                    </label>
+                    <button id="forgot-password-btn" onclick="navigateTo('forgot-password')">Forgot password?</button>
+                </div>
+                <button id="login-submit">Login</button>
+                <p>Don't have an account? <button onclick="navigateTo('register')">Register here</button></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: REGISTER -->
+    <section id="page-register">
+        <div id="register-content">
+            <h1>Create an account</h1>
+            <div id="register-form">
+                <div class="field-group">
+                    <label for="register-name">Full name</label>
+                    <input type="text" id="register-name" placeholder="Your full name">
+                </div>
+                <div class="field-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="your@email.com">
+                </div>
+                <div class="field-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" placeholder="Create a password">
+                </div>
+                <div class="field-group">
+                    <label for="register-confirm">Confirm password</label>
+                    <input type="password" id="register-confirm" placeholder="Repeat your password">
+                </div>
+                <div class="field-group">
+                    <label>
+                        <input type="checkbox" id="register-terms"> I agree to the terms and conditions
+                    </label>
+                </div>
+                <button id="register-submit">Create account</button>
+                <p>Already have an account? <button onclick="navigateTo('login')">Login here</button></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+
 </body>
 </html>

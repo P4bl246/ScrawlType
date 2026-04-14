@@ -1,132 +1,612 @@
-body{
-    width:100vw;
-    height:100vh;
-    margin:0;
-    padding:0;
+/* ─── Typography ─── */
+h1, h2 {
+    font-family: 'Jura', sans-serif;
+    color: #0d2f5c;
 }
 
-#home-header{
-    display:flex;
+p {
+    font-family: 'Inter', sans-serif;
+    color: #2c2c2c;
+    line-height: 1.7;
+}
+
+label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #0d2f5c;
+    font-weight: 500;
+}
+
+/* ─── Base ─── */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* ─── Header ─── */
+#home-header {
+    display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    background: linear-gradient(to right,rgba(33, 34, 36, 0.767), rgb(9, 61, 121));
-    width:100vw;
+    justify-content: space-between;
+    padding: 0 2vw;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(to right, rgba(33, 34, 36, 0.767), rgb(9, 61, 121));
+    position: sticky;
+    top: 0;           /* this was missing — sticky needs top to know where to lock */
+    z-index: 1000;    /* keeps header above all page content when scrolling */
 }
 
-#home-content{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background-color:#f0f0f0;
-}
-
-#home-header #logo{
+#home-header #logo {
     border: none;
-    background:none;
-    padding-right: 60vw;
-    margin-left: 0vw;
+    background: none;
+    padding-right: 0px;
+    margin-left: 0px;
 }
 
-#home-header #home-menu #desk-menu{
+#home-header #home-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2vw;
+    flex: 1;
+}
+
+#home-header #home-menu #desk-menu {
     display: none;
 }
 
-#home-header #home-menu{
-    display:flex;
+#home-header #home-menu button {
+    color: white;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#home-header #menu-btn img {
+    width: 30px;
+    height: 30px;
+}
+
+#home-header #continue-btn {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);  /* softer than login's black border */
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+}
+
+#home-header #continue-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid white;
+    color: white;
+}
+@media (min-width: 1280px) {
+    #home-header #continue-btn {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+#home-header #login-btn {
+    background-color: transparent;
+    border: 2px solid rgb(0, 0, 0);
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+#home-header #register-btn {
+    background-color: rgb(17, 17, 17);
+    border: white solid 2px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: #ccc;
+}
+
+#home-header #login-btn:hover {
+    background-color: rgba(36, 188, 199, 0.397);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: rgb(20, 20, 20);
+}
+
+#home-header #register-btn:hover {
+    background-color: rgba(23, 206, 238, 0.397);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: rgb(20, 20, 20);
+}
+
+#home-header #menu-btn:hover img {
+    width: 40px;
+    height: 40px;
+}
+
+#home-header #menu-btn:hover {
+    background-color: transparent;
+    border: black solid 2px;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+/* ─── Dropdown menu ─── */
+.menu-wrapper {
+    position: relative;
+}
+
+.menu-wrapper #menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    display: none;          /* hidden by default — open class shows it */
+    flex-direction: column;
+    z-index: 999;
+    border: 1px solid rgb(13, 47, 92);
+    background-color: rgb(25, 86, 114);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    gap: 4px;               /* reduced from 10vh — that was too large on small screens */
+    padding: 8px 0;
+    border-radius: 8px;
+    min-width: 180px;
+}
+
+#menu.open {
+    display: flex;
+}
+
+.menu-wrapper #menu button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 0;
+}
+
+.menu-wrapper #menu button:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* triangle fill */
+.menu-wrapper #menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    width: 14px;
+    height: 8px;
+    background: rgb(25, 86, 114);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* triangle border behind fill */
+.menu-wrapper #menu::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    width: 16px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: -1;
+}
+
+/* ─── Desktop breakpoint ─── */
+@media (min-width: 1280px) {
+    #home-header #home-menu #menu-btn {
+        display: none;
+    }
+
+    #home-header #home-menu #desk-menu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 2vw;
+        width: 100%;
+    }
+}
+
+/* ─── Sections (pages) — all hidden by default, JS controls visibility ─── */
+section {
+    display: none;          /* JS will set this to flex on the active page */
+    flex-direction: column;
+    min-height: calc(100vh - 60px); /* fills screen minus header height */
+    padding: clamp(1rem, 4vw, 3rem);
+}
+
+/* ─── Home ─── */
+#page-home {
+    background-color: #d1c4c47a;
+    align-items: center;
+}
+
+#home-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#intro {
+    max-width: 700px;
+    margin: 1.5rem 0;
+}
+
+#example1 {
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap:2vw;
+    gap: 2vw;
+    margin: 2rem 0;
+    flex-wrap: wrap;
 }
 
-#home-header #home-menu button{
-    color:white;
-    font-size:16px;
+#home-content #gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-top: 5vh;
+    gap: 1vw;
 }
 
-#home-header #menu-btn img{
-    width:30px;
-    height:30px;
+#home-content #gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;   /* keeps images cropped nicely instead of stretching */
+    border-radius: 8px;
 }
 
-#home-header #login-btn{
-    background-color:transparent;
-    border:2px solid rgb(0, 0, 0);
-    padding:5px 15px;
-    border-radius:5px;
+/* ─── About ─── */
+#page-about {
+    background-color: #eef3fb;
+    align-items: center;
 }
 
-#home-header #register-btn{
-    background-color:rgb(17, 17, 17);
-    border:white solid 2px;
-    padding:5px 15px;
-    border-radius:5px;
-    color:#333;
+#about-content {
+    max-width: 800px;
+    width: 100%;
 }
 
-#home-header #login-btn:hover{
-    background-color:rgba(36, 188, 199, 0.397);
-    border:none;
-    padding:5px 15px;
-    border-radius:5px;
-    color:rgb(20, 20, 20);
+#about-mission {
+    background-color: white;
+    border-left: 4px solid rgb(9, 61, 121);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
 }
 
-#home-header #register-btn:hover{
-    background-color:rgba(23, 206, 238, 0.397);
-    border:none;
-    padding:5px 15px;
-    border-radius:5px;
-    color:rgb(20, 20, 20);
+#about-team {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
 }
 
-#home-header #menu-btn:hover img{
-    width:40px;
-    height:40px;
+.team-member {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
-#home-header #menu-btn:hover{
-    background-color:transparent;
-    border:black solid 2px;
-    padding:5px 15px;
-    border-radius:5px;
+.team-member img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
 }
 
-@media (min-width: 1280px){
-    #home-header #home-menu #menu-btn{
-        display:none;
-    }
-
-    #home-header #home-menu #desk-menu{
-        display:flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap:2vw;
-    }
-}
-
-@media (max-width: 810px){
-    #home-header{
-        gap:0px;
-    }
-}
-
-
-
-
-
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    
-}
-
-h1, h1, h2{
+.team-member h3 {
     font-family: 'Jura', sans-serif;
+    color: #0d2f5c;
+    margin: 0 0 4px;
 }
 
-p{
+.team-member p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+/* ─── Contact ─── */
+#page-contact {
+    background-color: #f0f4fb;
+    align-items: center;
+}
+
+#contact-content {
+    max-width: 600px;
+    width: 100%;
+}
+
+/* ─── Shared form styles (used by contact, pqrs, login, register) ─── */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1.2rem;
+}
+
+.field-group input,
+.field-group textarea,
+.field-group select {
     font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1.5px solid #b0bdd4;
+    border-radius: 8px;
+    background-color: white;
+    color: #1a1a2e;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.field-group input:focus,
+.field-group textarea:focus,
+.field-group select:focus {
+    border-color: rgb(9, 61, 121);
+}
+
+.field-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#contact-submit,
+#pqrs-submit,
+#login-submit,
+#register-submit {
+    background-color: rgb(9, 61, 121);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+}
+
+#contact-submit:hover,
+#pqrs-submit:hover,
+#login-submit:hover,
+#register-submit:hover {
+    background-color: rgb(13, 47, 92);
+}
+
+#contact-info {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #c5d0e0;
+}
+
+/* ─── Donations ─── */
+#page-donations {
+    background-color: #f5f0eb;
+    align-items: center;
+}
+
+#donations-content {
+    max-width: 800px;
+    width: 100%;
+}
+
+#donation-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.donation-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1.5px solid #d4c5b0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+}
+
+.donation-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.donation-card h3 {
+    font-family: 'Jura', sans-serif;
+    color: #0d2f5c;
+    margin: 0 0 8px;
+}
+
+.donation-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgb(9, 61, 121);
+    margin: 0.5rem 0;
+}
+
+.donate-btn {
+    background-color: rgb(9, 61, 121);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.donate-btn:hover {
+    background-color: rgb(13, 47, 92);
+}
+
+#donation-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin-top: 1rem;
+}
+
+#donation-custom input {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1.5px solid #b0bdd4;
+    border-radius: 8px;
+    outline: none;
+}
+
+#donation-custom button {
+    background-color: rgb(9, 61, 121);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+#donation-custom button:hover {
+    background-color: rgb(13, 47, 92);
+}
+
+/* ─── PQRS ─── */
+#page-pqrs {
+    background-color: #f0f4fb;
+    align-items: center;
+}
+
+#pqrs-content {
+    max-width: 600px;
+    width: 100%;
+}
+
+/* ─── Login ─── */
+#page-login {
+    background-color: #eef3fb;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-content {
+    max-width: 420px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+#login-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 13px;
+}
+
+#login-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+#forgot-password-btn {
+    background: none;
+    border: none;
+    color: rgb(9, 61, 121);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+#forgot-password-btn:hover {
+    text-decoration: underline;
+}
+
+#login-content p {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 1rem;
+}
+
+#login-content p button {
+    background: none;
+    border: none;
+    color: rgb(9, 61, 121);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+}
+
+#login-content p button:hover {
+    text-decoration: underline;
+}
+
+/* ─── Register ─── */
+#page-register {
+    background-color: #eef3fb;
+    align-items: center;
+    justify-content: center;
+}
+
+#register-content {
+    max-width: 480px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+#register-content p {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 1rem;
+}
+
+#register-content p button {
+    background: none;
+    border: none;
+    color: rgb(9, 61, 121);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+}
+
+#register-content p button:hover {
+    text-decoration: underline;
 }
