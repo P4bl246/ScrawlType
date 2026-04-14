@@ -140,7 +140,7 @@ body {
 #home-header #menu-btn:hover {
     background-color: transparent;
     border: black solid 2px;
-    padding: 2vh 3vw;
+    padding: 2vh 2vw;
     border-radius: 5px;
 }
 
