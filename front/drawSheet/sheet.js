@@ -44,8 +44,8 @@ function getTouchPos(canvas, touchEvent) {
     const rect = canvas.getBoundingClientRect();
     const touch = touchEvent.touches[0];
     return {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
+        X: touch.clientX - rect.left,
+        Y: touch.clientY - rect.top
     };
 }
 
