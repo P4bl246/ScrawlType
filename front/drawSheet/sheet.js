@@ -17,6 +17,8 @@ class draw{
         this.brushSize=size;
         this.brushType=brushType;
         this.canvaContext = canvaContext;
+        this.posX = [];
+        this.posY = [];
         this.posXPush = (x)=>{this.posX.push(x)};
         this.posYPush = (y)=>{this.posY.push(y)};
     }
@@ -36,6 +38,15 @@ class draw{
         this.posXPush(currentPositionX);
         this.posYPush(currentPositionY);
     }
+}
+
+function getTouchPos(canvas, touchEvent) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = touchEvent.touches[0];
+    return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+    };
 }
 
 let drawIn = new draw(document.getElementById("colorPicker").value, document.getElementById("brushSize").value, "round", canva_repr);
@@ -71,17 +82,20 @@ canva_repr.fillStyle = document.getElementById("colorPicker").value;
 
 canva.addEventListener("touchmove", (e) => {
     if (!isDrawing){return;}
+    e.preventDefault();
+    const pos = getTouchPos(canva, e);
+
    let rect_size = document.getElementById("brushSize").value;
 canva_repr.fillStyle = document.getElementById("colorPicker").value;
    if (track_pos){
-        if (lastX != e.offsetX || lastY != e.offsetY) {
-          drawIn.trackWhileDrawing(e.offsetX, e.offsetY);
+        if (lastX != pos.X || lastY != pos.Y) {
+          drawIn.trackWhileDrawing(pos.X, pos.Y);
           }
     }
-    drawIn.drawOnCanva(lastX, lastY, e.offsetX, e.offsetY);    
+    drawIn.drawOnCanva(lastX, lastY, pos.X, pos.Y);    
 
-    lastX = e.offsetX;
-    lastY = e.offsetY;
+    lastX = pos.X;
+    lastY = pos.Y;
 });
 
 //stop drawing
@@ -90,10 +104,18 @@ canva.addEventListener("mouseup", () => {
     let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
 console.log("coordi: ",draws);
 });
-canva.addEventListener("touchstart", ()=>{
-       isDrawing = false;
-    let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
-    console.log("coordi: ",draws);
+canva.addEventListener("touchstart", (e)=>{
+    e.preventDefault();
+    const pos = getTouchPos(canva, e);
+       isDrawing = true;
+    lastX = pos.X+3;
+    lastY = pos.Y+3;
+    drawIn.color = document.getElementById("colorPicker").value;
+    drawIn.brushSize = document.getElementById("brushSize").value;
+    drawIn.drawOnCanva(lastX, lastY, lastX, lastY); // Draw a point at the initial position
+    if (track_pos){
+        drawIn.trackWhileDrawing(lastX, lastY);
+    }
 });
 
 canva.addEventListener("mouseleave", () => {
