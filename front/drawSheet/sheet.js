@@ -69,15 +69,39 @@ canva_repr.fillStyle = document.getElementById("colorPicker").value;
 
 });
 
+canva.addEventListener("touchMove", (e) => {
+    if (!isDrawing){return;}
+   let rect_size = document.getElementById("brushSize").value;
+canva_repr.fillStyle = document.getElementById("colorPicker").value;
+   if (track_pos){
+        if (lastX != e.offsetX || lastY != e.offsetY) {
+          drawIn.trackWhileDrawing(e.offsetX, e.offsetY);
+          }
+    }
+    drawIn.drawOnCanva(lastX, lastY, e.offsetX, e.offsetY);    
+
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+});
+
 //stop drawing
 canva.addEventListener("mouseup", () => {
    isDrawing = false;
     let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
 console.log("coordi: ",draws);
 });
+canva.addEventListener("touchStart", ()=>{
+       isDrawing = false;
+    let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
+    console.log("coordi: ",draws);
+});
+
 canva.addEventListener("mouseleave", () => {
    isDrawing = false; 
 });
+canva.addEventListener("TouchEnd", () => {
+    isDrawing= false;
+})
 
 /*
 function getCanvaSchema(x, y, canva_width, canva_height, cntx, color, that_is_not, brush_size) {
