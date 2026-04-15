@@ -69,7 +69,7 @@ canva_repr.fillStyle = document.getElementById("colorPicker").value;
 
 });
 
-canva.addEventListener("touchMove", (e) => {
+canva.addEventListener("touchmove", (e) => {
     if (!isDrawing){return;}
    let rect_size = document.getElementById("brushSize").value;
 canva_repr.fillStyle = document.getElementById("colorPicker").value;
@@ -90,7 +90,7 @@ canva.addEventListener("mouseup", () => {
     let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
 console.log("coordi: ",draws);
 });
-canva.addEventListener("touchStart", ()=>{
+canva.addEventListener("touchstart", ()=>{
        isDrawing = false;
     let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
     console.log("coordi: ",draws);
@@ -99,7 +99,7 @@ canva.addEventListener("touchStart", ()=>{
 canva.addEventListener("mouseleave", () => {
    isDrawing = false; 
 });
-canva.addEventListener("TouchEnd", () => {
+canva.addEventListener("touchend", () => {
     isDrawing= false;
 })
 
