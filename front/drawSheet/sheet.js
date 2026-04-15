@@ -119,11 +119,11 @@ canva.addEventListener("touchstart", (e)=>{
 });
 
 canva.addEventListener("mouseleave", () => {
-   isDrawing = false; 
+   isDrawing = false;
 });
 canva.addEventListener("touchend", () => {
-    isDrawing= false;
-})
+   isDrawing = false;
+});
 
 /*
 function getCanvaSchema(x, y, canva_width, canva_height, cntx, color, that_is_not, brush_size) {
