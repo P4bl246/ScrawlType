@@ -90,18 +90,24 @@ canva.addEventListener("mouseup", () => {
     let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
 console.log("coordi: ",draws);
 });
-canva.addEventListener("touchstart", ()=>{
-       isDrawing = false;
-    let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
-    console.log("coordi: ",draws);
+canva.addEventListener("touchstart", (e)=>{
+       isDrawing = true;
+    lastX = e.offsetX+3;
+    lastY = e.offsetY+3;
+    drawIn.color = document.getElementById("colorPicker").value;
+    drawIn.brushSize = document.getElementById("brushSize").value;
+    drawIn.drawOnCanva(lastX, lastY, lastX, lastY); // Draw a point at the initial position
+    if (track_pos){
+        drawIn.trackWhileDrawing(lastX, lastY);
+    }
 });
 
 canva.addEventListener("mouseleave", () => {
-   isDrawing = false; 
+   isDrawing = false;
 });
 canva.addEventListener("touchend", () => {
-    isDrawing= false;
-})
+   isDrawing = false;
+});
 
 /*
 function getCanvaSchema(x, y, canva_width, canva_height, cntx, color, that_is_not, brush_size) {
