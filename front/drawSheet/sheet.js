@@ -3,24 +3,38 @@ const canva_repr = canva.getContext("2d");
 canva.width = canva.offsetWidth;
 canva.height = canva.offsetHeight;
 
+const sche = document.getElementById("schema");
+const sche_repr = sche.getContext("2d");
+sche.width = sche.offsetWidth;
+sche.height = sche.offsetHeight;
+
 let lastX = 0;
 let lastY = 0;
 let first_time = true;
-let track_pos=false;
+let track_pos=true;
 let isDrawing = false;
 function set_tracking(flag){track_pos = flag;}
 function set_firs_time(flag){first_time = flag;}
 
+let struct = {
+ lineType: {},
+ degrees:{},
+ lengthRelation:{},
+ gapRelation:{},
+ side:{},
+ vertix:{},
+};
 class draw{
     constructor(color, size, brushType, canvaContext){
         this.color=color;
         this.brushSize=size;
         this.brushType=brushType;
         this.canvaContext = canvaContext;
-        this.posX = [];
-        this.posY = [];
-        this.posXPush = (x)=>{this.posX.push(x)};
-        this.posYPush = (y)=>{this.posY.push(y)};
+        this.pos = {};
+        this.track = (coordinates)=>{
+            if (!((""+coordinates.x) in this.pos)){this.pos[(""+coordinates.x)] = [];}
+            this.pos[(""+coordinates.x)].push(coordinates.y);
+        };
     }
 
     drawOnCanva(startPositionX, startPositionY, currentPositionX, currentPositionY, cornersDraw = "miter"){
@@ -35,8 +49,7 @@ class draw{
     }
     
     trackWhileDrawing(currentPositionX, currentPositionY){
-        this.posXPush(currentPositionX);
-        this.posYPush(currentPositionY);
+        this.track({x:currentPositionX, y:currentPositionY});
     }
 }
 
@@ -49,6 +62,119 @@ function getTouchPos(canvas, touchEvent) {
     };
 }
 
+function clearCanvas(){
+    schema.drawOnCanva()
+}
+class lineType{
+     constructor(){}
+
+     rect(lastX, lastY, actualX, actualY, errormarginX=10, errormarginY=10){
+        let horizontal = this.horizontal(lastX, actualX, errormarginX);
+        let vertical = this.vertical(lastY, actualY, errormarginY);
+         return {h:horizontal, v:vertical};
+     }
+
+     horizontal(lastX, actualX, errormarginX){
+        let n = {flag:false, oriented:0};
+        if (((actualX > lastX) && ((actualX-errormarginX) <= lastX)) || ((actualX < lastX) && ((actualX+errormarginX) >= lastX))){
+            n.flag = true;
+            if (actualX > lastX){n.oriented = 1;}
+            else if (actualX < lastX){n.oriented = -1;}
+        }
+        return n;
+     }
+
+     vertical(lastY, actualY, errormarginY){
+        let n = {flag:false, oriented:0};
+        if (((actualY > lastY) && ((actualY-errormarginY) <= lastY)) || ((actualY < lastY) && ((actualY+errormarginY) >= lastY))){
+            n.flag = true;
+            if (actualY > lastY){n.oriented = 1;}
+            else if (actualY < lastY){n.oriented = -1;}
+        }
+        return n;
+     }
+
+     diagonal(lastX, lastY, actualX, actualY){
+        return  {rect:true, degree:((Math.atan2(actualX-lastX, actualY-lastY)*180)/Math.PI)};
+     }
+
+     curved(lastX, lastY, actualX, actualY, errormarginX, errormarginY){}
+}
+let clasification = new lineType();
+class propertiesOfDraw{
+    vertix(coordinates){
+
+    }
+    getRelation(origin, actual){
+        let relation = {x:origin.x-actual.x, y:origin.y-actual.y, negativeX:false, negativeY:false};
+        if ((relation.x & 0x80000000) !== 0) {
+            relation.x = Math.abs(relation.x);
+            relation.negativeX = true;
+        }
+        if ((relation.y & 0x80000000) !== 0) {
+            relation.y = Math.abs(relation.y);
+            relation.negativeY = true;
+        }
+        return relation;
+    }
+    getLenght(relation){
+        return Math.hypot(relation.x, relation.y);
+    }
+    getMiddlePoint(origin, length){
+        return {x:origin.x+(length.x/2), y:origin.y+(length.y/2)};
+    }
+    getSides(ReferenceOrigin, actual){
+        let sides = {top:false, bottom:false, right:false, left:false};
+        if (actual.y < ReferenceOrigin.y){sides.top = true;}
+        else if (actual.y > ReferenceOrigin.y){sides.bottom = true;}
+        if (actual.x < ReferenceOrigin.x){sides.left = true;}
+        else if (actual.x > ReferenceOrigin.x){sides.right = true;}
+        return sides;
+    }
+    
+    getLinesRelation(linesArray){
+        let lenghtOfeach = [];
+        for (let i = 0; i < linesArray.length-1; i++){
+            let relation = getRelation(linesArray[0],linesArray[i][0]);
+            lenghtOfeach.push(getLenght(relation));
+        }
+        let middlePoints = [];
+        for (let i = 0; i < linesArray.length-1; i++){
+            middlePoints.push(getMiddlePoint(linesArray[i], lenghtOfeach[i]));
+        }
+        let sides = [];
+        for (let i = 0; i < arrayLines.length-1; i++){
+            for (let j = 0; j < arrayLines.length; j++){
+                    sides.push(getSides(arrayLines[i], middlePoints[i]));             
+            }
+        }
+        let lenRelation = getLenghtRelation(lenghtOfeach);
+        let angleRelation = getAngleRelation(middlePoints);
+            return {lenghtOfeach:lenghtOfeach, middlePoints:middlePoints, sides:sides, lenRelation:lenRelation, angleRelation:angleRelation};
+    }
+    
+    getLenghtRelation(arrayLength){
+        let relation = [];
+        for (let i = 0; i < arrayLength.length-1; i++){
+            relation.push(arrayLength[i+1]/arrayLength[i]);
+        }
+        return relation;
+    }
+
+    getAngleRelation(middlePointsArray){
+        let angles = [];
+        for (let i = 0; i < middlePointsArray.length-1; i++){
+            let angle = getAngle(middlePointsArray[i], middlePointsArray[i+1]);
+            angles.push(angle);
+        }
+        return angles;
+    }
+
+    getAngle(origin, actual){
+        let relation = getRelation(origin, actual);
+        return {angle:(Math.atan2(relation.y, relation.x)*180)/Math.PI, isNegative:{negativeX:relation.negativeX, negativeY:relation.negativeY}};
+    }
+}
 let drawIn = new draw(document.getElementById("colorPicker").value, document.getElementById("brushSize").value, "round", canva_repr);
 //start drawing
 canva.addEventListener("mousedown", (e) => {
@@ -63,18 +189,34 @@ canva.addEventListener("mousedown", (e) => {
     }
 });
 
+canva.addEventListener("touchstart", (e)=>{
+    e.preventDefault();
+    const pos = getTouchPos(canva, e);
+       isDrawing = true;
+    lastX = pos.X+3;
+    lastY = pos.Y+3;
+    drawIn.color = document.getElementById("colorPicker").value;
+    drawIn.brushSize = document.getElementById("brushSize").value;
+    drawIn.drawOnCanva(lastX, lastY, lastX, lastY); // Draw a point at the initial position
+    if (track_pos){
+        drawIn.trackWhileDrawing(lastX, lastY);
+    }
+});
+let A =  [];
 //Drawing
 canva.addEventListener("mousemove", (e)=>{
    if (!isDrawing){return;}
    let rect_size = document.getElementById("brushSize").value;
 canva_repr.fillStyle = document.getElementById("colorPicker").value;
+let n = clasification.rect(lastX, lastY, e.offsetX, e.offsetY);
+    console.log("", n);
+    
    if (track_pos){
         if (lastX != e.offsetX || lastY != e.offsetY) {
           drawIn.trackWhileDrawing(e.offsetX, e.offsetY);
           }
     }
     drawIn.drawOnCanva(lastX, lastY, e.offsetX, e.offsetY);    
-
     lastX = e.offsetX;
     lastY = e.offsetY;
 
@@ -101,100 +243,30 @@ canva_repr.fillStyle = document.getElementById("colorPicker").value;
 //stop drawing
 canva.addEventListener("mouseup", () => {
    isDrawing = false;
-    let draws = getCanvaDraw(0, 0, canva.width, canva.height, canva_repr, pack([0, 0, 0, 255], 8),false);
-console.log("coordi: ",draws);
+console.log("X: ",drawIn.pos);
+for (i = 0; i < drawIn.posX.length-1; i++){
+    schema.drawOnCanva(drawIn.pos.x[i], drawIn.posY[i], drawIn.posX[i+1], drawIn.posY[i+1]); 
+   }
+   schema.drawOnCanva(drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1], drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1]);
 });
-canva.addEventListener("touchstart", (e)=>{
-    e.preventDefault();
-    const pos = getTouchPos(canva, e);
-       isDrawing = true;
-    lastX = pos.X+3;
-    lastY = pos.Y+3;
-    drawIn.color = document.getElementById("colorPicker").value;
-    drawIn.brushSize = document.getElementById("brushSize").value;
-    drawIn.drawOnCanva(lastX, lastY, lastX, lastY); // Draw a point at the initial position
-    if (track_pos){
-        drawIn.trackWhileDrawing(lastX, lastY);
-    }
-});
+
+let schema = new draw(document.getElementById("colorPicker").value, 2, "square", sche_repr);
 
 canva.addEventListener("mouseleave", () => {
    isDrawing = false;
+   for (i = 0; i < drawIn.posX.length-1; i++){
+    schema.drawOnCanva(drawIn.posX[i], drawIn.posY[i], drawIn.posX[i+1], drawIn.posY[i+1]); 
+   }
+   schema.drawOnCanva(drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1], drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1]);
+
 });
+
 canva.addEventListener("touchend", () => {
    isDrawing = false;
+   for (i = 0; i < drawIn.posX.length-1; i++){
+    schema.drawOnCanva(drawIn.posX[i], drawIn.posY[i], drawIn.posX[i+1], drawIn.posY[i+1]);
+    }
+    schema.drawOnCanva(drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1], drawIn.posX[drawIn.posX.length-1], drawIn.posY[drawIn.posY.length-1]); 
+    
 });
-
-/*
-function getCanvaSchema(x, y, canva_width, canva_height, cntx, color, that_is_not, brush_size) {
-    // .data gives us the raw flat Uint8ClampedArray of RGBA bytes
-    let canva_data = cntx.getImageData(x, y, canva_width, canva_height).data;
-    let color_array = [];
-    let result = [];
-    let col = 0;
-    let row = 0;
-    let padding_rows = brush_size-1;
-    let in_padding = false;
-   let last_row = [];
-    // Step 4 at a time since each pixel = 4 bytes (R, G, B, A)
-    for (let i = 0; i < canva_data.length; i += 4) {
-        color_array.push(pack(
-            [canva_data[i], canva_data[i+1], canva_data[i+2], canva_data[i+3]], 8
-        ));
-    }
-    console.log("First 5 packed pixels:", canva_data.slice(0, 4));
-      console.log("Target color you're comparing to:", color_array[0]);
-    // Use for...of so 'el' is the actual packed color, not its index
-    for (let el of color_array) {
-        col += 1; 
-
-      if (in_padding){
-        
-
-       continue;
-      }
-      padding_rows = brush_size-1;
-
-        const matches = colorComp(el, color);
-
-        if (that_is_not ? !matches : matches) {
-         
-        }
-
-
-        // Move to the next row once we've passed the last column
-        if (col >= canva_width) {
-            row += 1;
-            col = 0;
-        }
-    }
-
-    return result;
-}
-
-function skip_padding(rows_to_ignore = 0, cols_to_ignore = 0, actual_col_counter = 0, row_len = 0){
-    if (padding_rows != 0 && col == canva_width){padding_rows-=1}
-        else if (padding_rows == 0){in_padding = false;}     
-
-        if (col >= canva_width) {
-            row += 1;
-            col = 0;
-        }
-}
-
-function colorComp(to_comp, for_comp){
-   return to_comp === for_comp;
-}
-
-// Pack array of small values into one integer
-function pack(values, bitsEach) {
-    let result = 0;
-    for (let i = 0; i != values.length; i++) {
-        result |= values[i] << (i*bitsEach);
-    }
-    return result;
-}
-
-*/
-
 
