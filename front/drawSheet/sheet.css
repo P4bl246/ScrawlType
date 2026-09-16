@@ -7,10 +7,6 @@ canvas {
 
   }
 
-  .sheets{
-    align-items:center;
-  }
-
   .toolbar {
     display: flex;
     gap: 10px;
