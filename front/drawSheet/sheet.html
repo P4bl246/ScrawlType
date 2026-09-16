@@ -5,14 +5,20 @@
 </head>
 <body>
 
-<div class="toolbar">
+<div class="canvas-toolbar">
   <label>Color: <input type="color" id="colorPicker" value="#000000"></label>
   <label>Size: <input type="number" id="brushSize" min="2" max="50" value="10"></label>
   <button onclick="clearCanvas()">Clear</button>
 </div>
 
-<canvas id="canvas" ></canvas>
-<canvas id="schema"></canvas>
+
+<div class="sheets">
+  <canvas id="canvas" ></canvas>
+  <canvas id="schema"></canvas>
+</div>
+<button onclick="addSample()">Add sample</button>
+<textarea id="sampleName" rows="1" style="width: 5ch; font-family: monospace; resize: none;"></textarea>
+  
 
 <script src="./sheet.js"></script>
 
