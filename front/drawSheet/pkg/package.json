@@ -1,0 +1,15 @@
+{
+  "name": "samples_manager",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "samples_manager_bg.wasm",
+    "samples_manager.js",
+    "samples_manager.d.ts"
+  ],
+  "main": "samples_manager.js",
+  "types": "samples_manager.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
