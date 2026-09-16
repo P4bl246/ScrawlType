@@ -13,12 +13,13 @@ async function main() {
   const canva_repr = canva.getContext("2d");
   canva.width = canva.offsetWidth;
   canva.height = canva.offsetHeight;
-
+/*
   const sche = document.getElementById("schema");
   const sche_repr = sche.getContext("2d");
   sche.width = sche.offsetWidth;
   sche.height = sche.offsetHeight;
-
+*/
+const sche = document.getElementById("schema");
   let lastX = 0;
   let lastY = 0;
   let isDrawing = false;
@@ -85,6 +86,7 @@ async function main() {
   // ============================================================
   function clearCanvas() {
     canva_repr.clearRect(0, 0, canva.width, canva.height);
+    gest_mngr.end_gesture();
   }
 
   // ============================================================
@@ -97,7 +99,7 @@ async function main() {
     canva_repr
   );
 
-  let schema = new Draw(document.getElementById("colorPicker").value, 2, "square", sche_repr);
+  // let schema = new Draw(document.getElementById("colorPicker").value, 2, "square", sche_repr);
 
   let gest_mngr = new GesturesManager(50);
 
@@ -185,6 +187,7 @@ async function main() {
     let shape = gest_mngr.take_gesture("");
     console.log(shape);
     let result = gest_mngr.match_shape(shape);
+    console.log(result);
     if (result !== undefined) {
       write_on_schema(result);
     }
@@ -197,11 +200,7 @@ async function main() {
   let y_writte = 0;
 
   function write_on_schema(text) {
-    sche_repr.font = "20px Arial";
-    sche_repr.fillStyle = "black";
-    sche_repr.fillText(text, x_writte, y_writte);
-    x_writte+=1;
-    y_writte+=1;
+    sche.textContent = text;
   }
 
   // ============================================================
@@ -211,7 +210,7 @@ async function main() {
     let sample_name = String(document.getElementById("sampleName").value);
     if (sample_name === "") return;
     console.log(sample_name);
-    gest_mngr.end_gesture();
+    
     gest_mngr.add_gesture(sample_name);
     return;
   }
