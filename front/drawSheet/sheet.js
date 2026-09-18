@@ -200,7 +200,7 @@ const sche = document.getElementById("schema");
   let y_writte = 0;
 
   function write_on_schema(text) {
-    sche.textContent = text;
+    sche.textContent += text;
   }
 
   // ============================================================
